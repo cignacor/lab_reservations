@@ -1,11 +1,13 @@
-// Academic Laboratory Reservation System
-// Frontend JavaScript - camelCase convention
+// Using camelCase naming convention for variables and functions
 
+// Base URL for API requests
 const apiBaseUrl = 'bookings.php';
 
+// Global state variables
 let selectedLaboratoryId = null;
 let isAvailable = false;
 
+// Executes when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     loadLaboratories();
     loadBookings();
@@ -13,17 +15,26 @@ document.addEventListener('DOMContentLoaded', function() {
     setMinDate();
 });
 
+/* =========================
+   Sets up button event listeners
+   ========================= */
 function setupEventListeners() {
     document.getElementById('checkAvailabilityBtn').addEventListener('click', checkAvailability);
     document.getElementById('bookBtn').addEventListener('click', createBooking);
     document.getElementById('logoutBtn').addEventListener('click', logout);
 }
 
+/* =========================
+   Prevents selecting past dates
+   ========================= */
 function setMinDate() {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('bookingDate').min = today;
 }
 
+/* =========================
+   Fetches all laboratories from API
+   ========================= */
 async function loadLaboratories() {
     try {
         const response = await fetch(`${apiBaseUrl}?action=laboratories`);
@@ -39,6 +50,9 @@ async function loadLaboratories() {
     }
 }
 
+/* =========================
+   Displays laboratories as selectable cards
+   ========================= */
 function displayLaboratories(laboratories) {
     const grid = document.getElementById('laboratoriesGrid');
     grid.innerHTML = '';
@@ -64,12 +78,18 @@ function displayLaboratories(laboratories) {
     });
 }
 
+/* =========================
+   Handles laboratory selection
+   ========================= */
 function selectLaboratory(id, card) {
     document.querySelectorAll('.laboratory-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     selectedLaboratoryId = id;
 }
 
+/* =========================
+   Checks availability before booking
+   ========================= */
 async function checkAvailability() {
     if (!selectedLaboratoryId) {
         showError('Please select a laboratory first');
@@ -111,6 +131,9 @@ async function checkAvailability() {
     }
 }
 
+/* =========================
+   Sends booking request to API
+   ========================= */
 async function createBooking() {
     if (!isAvailable || !selectedLaboratoryId) {
         showError('Please check availability first');
@@ -147,6 +170,9 @@ async function createBooking() {
     }
 }
 
+/* =========================
+   Fetches all active bookings
+   ========================= */
 async function loadBookings() {
     try {
         const response = await fetch(`${apiBaseUrl}?action=bookings`);
@@ -162,6 +188,9 @@ async function loadBookings() {
     }
 }
 
+/* =========================
+   Displays booking list in UI
+   ========================= */
 function displayBookings(bookings) {
     const container = document.getElementById('bookingsList');
     container.innerHTML = '';
@@ -195,6 +224,9 @@ function displayBookings(bookings) {
     });
 }
 
+/* =========================
+   Sends cancel request to API
+   ========================= */
 async function cancelBooking(bookingId) {
     if (!confirm('Are you sure you want to cancel this booking?')) {
         return;
@@ -220,6 +252,9 @@ async function cancelBooking(bookingId) {
     }
 }
 
+/* =========================
+   Resets booking form and UI state
+   ========================= */
 function resetForm() {
     document.querySelectorAll('.laboratory-card').forEach(c => c.classList.remove('selected'));
     selectedLaboratoryId = null;
@@ -230,6 +265,9 @@ function resetForm() {
     document.getElementById('bookBtn').style.display = 'none';
 }
 
+/* =========================
+   Formats date into readable text
+   ========================= */
 function formatDate(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -240,27 +278,41 @@ function formatDate(dateString) {
     });
 }
 
+/* =========================
+   Formats time to HH:MM
+   ========================= */
 function formatTime(timeString) {
-    return timeString.substring(0, 5); // HH:MM format
+    return timeString.substring(0, 5);
 }
 
+/* =========================
+   Displays success modal
+   ========================= */
 function showSuccess(message) {
     document.getElementById('successMessage').textContent = message;
     document.getElementById('successModal').classList.add('show');
 }
 
+/* =========================
+   Displays error modal
+   ========================= */
 function showError(message) {
     document.getElementById('errorMessage').textContent = message;
     document.getElementById('errorModal').classList.add('show');
 }
 
+/* =========================
+   Closes modal window
+   ========================= */
 function closeModal(modalId) {
     document.getElementById(modalId).classList.remove('show');
 }
 
+/* =========================
+   Handles logout action
+   ========================= */
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        // Implement logout logic if needed
         window.location.reload();
     }
 }
