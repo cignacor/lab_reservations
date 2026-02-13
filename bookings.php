@@ -50,9 +50,7 @@ try {
     ]);
 }
 
-/* =========================
-   Handles all GET requests
-   ========================= */
+
 function handleGet($action, $db) {
     switch ($action) {
         case 'laboratories':
@@ -69,9 +67,7 @@ function handleGet($action, $db) {
     }
 }
 
-/* =========================
-   Handles all POST requests
-   ========================= */
+
 function handlePost($action, $db) {
     switch ($action) {
         case 'book':
@@ -82,9 +78,7 @@ function handlePost($action, $db) {
     }
 }
 
-/* =========================
-   Handles all DELETE requests
-   ========================= */
+
 function handleDelete($action, $db) {
     switch ($action) {
         case 'cancel':
@@ -95,9 +89,7 @@ function handleDelete($action, $db) {
     }
 }
 
-/* ==================================
-   Returns all laboratories as JSON
-   ================================== */
+
 function getLaboratories($db) {
     $laboratories = $db->getLaboratories();
     echo json_encode([
@@ -106,9 +98,7 @@ function getLaboratories($db) {
     ]);
 }
 
-/* ==================================
-   Returns all active bookings as JSON
-   ================================== */
+
 function getBookings($db) {
     $bookings = $db->getBookings();
     echo json_encode([
@@ -117,9 +107,7 @@ function getBookings($db) {
     ]);
 }
 
-/* ==================================================
-   Checks if a laboratory is available for a time slot
-   ================================================== */
+
 function checkAvailability($db) {
     $laboratoryId = $_GET['laboratory_id'] ?? null;
     $date = $_GET['date'] ?? null;
@@ -156,9 +144,7 @@ function checkAvailability($db) {
     ]);
 }
 
-/* ==================================
-   Creates a new laboratory booking
-   ================================== */
+
 function createBooking($db) {
     // Reads JSON input from request body
     $input = json_decode(file_get_contents('php://input'), true);
@@ -231,9 +217,6 @@ function createBooking($db) {
     }
 }
 
-/* ==================================
-   Cancels an existing booking
-   ================================== */
 function cancelBooking($db) {
     $input = json_decode(file_get_contents('php://input'), true);
 
